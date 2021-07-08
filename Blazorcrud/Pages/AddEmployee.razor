@@ -1,0 +1,64 @@
+﻿@page "/AddEmployee"
+@using Blazorcrud.Data
+@using System.Text;
+@using System.Net.Mime;
+@inject EmployeeService employeeService
+@inject ApiService apiService
+@inject NavigationManager NavigationManager
+@using System.Text.Json
+@using System.Text.Json.Serialization;
+@inject IHttpClientFactory ClientFactory
+
+<h2>Add Employee</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@obj.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Gender" class="control-label">Gender</label>
+                <select @bind="@obj.Gender" class="form-control">
+                    <option value="">-Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Designation" class="control-label">Desgination</label>
+                <input form="Designation" class="form-control" @bind="@obj.Desgination" />
+            </div>
+            <div class="form-group">
+                <label for="City" class="control-label">City</label>
+                <input form="City" class="form-control" @bind="@obj.City" />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@PostEmployee" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Employee obj = new Employee();
+    protected async void CreateEmployee()
+    {
+       await employeeService.InsertEmployeeAsync(obj);    
+
+        NavigationManager.NavigateTo("Employees");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Employees");
+    }
+}
